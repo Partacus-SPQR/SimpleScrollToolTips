@@ -1,4 +1,3 @@
-<img width="400" height="211" alt="bandicam 2026-06-30 02-49-07-135" src="https://github.com/user-attachments/assets/2868882c-2516-449a-a40e-715488e43157" />
 # SimpleScrollToolTips
 
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.1--26.2-green)](https://minecraft.net)
@@ -80,6 +79,7 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 Per-version jars are written to `versions/<mc>/build/libs/`.
 
 ## How it works
+<img width="400" height="211" alt="bandicam 2026-06-30 02-49-07-135" src="https://github.com/user-attachments/assets/2868882c-2516-449a-a40e-715488e43157" />
 
 Item tooltips in container screens are positioned by `DefaultTooltipPositioner`, which clamps oversized tooltips to the screen. SimpleScrollToolTips offsets the tooltip position **after** that clamp, letting it move off-screen so the hidden lines scroll into view.
 

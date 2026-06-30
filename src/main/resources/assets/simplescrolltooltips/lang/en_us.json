@@ -1,0 +1,19 @@
+{
+	"simplescrolltooltips.key.category": "SimpleScrollToolTips",
+	"simplescrolltooltips.key.scroll_up": "Scroll Tooltip Up",
+	"simplescrolltooltips.key.scroll_down": "Scroll Tooltip Down",
+	"simplescrolltooltips.key.scroll_left": "Scroll Tooltip Left",
+	"simplescrolltooltips.key.scroll_right": "Scroll Tooltip Right",
+
+	"simplescrolltooltips.config.title": "SimpleScrollToolTips Config",
+	"simplescrolltooltips.config.enable": "Enabled: %s",
+	"simplescrolltooltips.config.sensitivity": "Sensitivity: %s",
+	"simplescrolltooltips.config.auto_reset": "Auto-Reset on slot change: %s",
+	"simplescrolltooltips.config.auto_reset.tooltip": "When enabled, scroll position resets when hovering a different item slot.",
+	"simplescrolltooltips.config.invert_x": "Invert Horizontal: %s",
+	"simplescrolltooltips.config.invert_y": "Invert Vertical: %s",
+	"simplescrolltooltips.config.done": "Done",
+
+	"simplescrolltooltips.constant.true": "ON",
+	"simplescrolltooltips.constant.false": "OFF"
+}

@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "com.simplescrolltooltips.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"MixinAbstractContainerScreen",
+		"MixinDefaultTooltipPositioner"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

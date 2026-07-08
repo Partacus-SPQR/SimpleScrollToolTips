@@ -19,8 +19,12 @@ import org.lwjgl.glfw.GLFW;
 
 public class SimpleScrollToolTipsClient implements ClientModInitializer {
     public static final String MOD_ID = "simplescrolltooltips";
+    /** Diagnostics: launch with -Dsimplescrolltooltips.debug=true to trace tooltip tracking and input gating. */
+    static final boolean DEBUG = Boolean.getBoolean("simplescrolltooltips.debug");
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger("SimpleScrollToolTips");
 
     private static SimpleScrollToolTipsClient instance;
+    private String lastTooltipDebug;
 
     private SimpleScrollToolTipsConfig config;
     private ScrollSession scrollSession;
@@ -90,6 +94,72 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
                 this.previousScreen = currentScreen;
             }
         });
+    }
+
+    /**
+     * Called from the universal tooltip hook every frame a tooltip is positioned.
+     * When a differently-sized tooltip appears outside a container slot (custom
+     * mod GUIs), the scroll is auto-reset, mirroring the slot-change reset.
+     */
+    public void onTooltipPositioned(int screenWidth, int screenHeight, int tooltipWidth, int tooltipHeight, int baseX, int baseY) {
+        boolean newTooltip = this.scrollSession.trackTooltip(screenWidth, screenHeight, tooltipWidth, tooltipHeight, baseX, baseY);
+        if (newTooltip && this.config.autoReset() && !this.scrollSession.hasItemRendering()) {
+            this.scrollSession.resetScrollAmount();
+        }
+        if (DEBUG) {
+            String state = "tooltip base=" + baseX + "," + baseY + " size=" + tooltipWidth + "x" + tooltipHeight
+                + " screen=" + screenWidth + "x" + screenHeight
+                + " overflow=" + this.scrollSession.isTooltipOverflowing()
+                + " offset=" + this.scrollSession.horizontalAmount() + "," + this.scrollSession.verticalAmount()
+                + (newTooltip ? " NEW" : "");
+            if (!state.equals(this.lastTooltipDebug)) {
+                LOGGER.info("[SSTT-debug] {}", state);
+                this.lastTooltipDebug = state;
+            }
+        }
+    }
+
+    /** Wheel event observed while a screen is open (called for every screen type). */
+    public void onScreenScroll(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        boolean scrollable = isScrollableContext();
+        if (DEBUG) {
+            LOGGER.info("[SSTT-debug] wheel dx={} dy={} screen={} gate={} (slot={} visible={} overflow={} offset={})",
+                horizontalAmount, verticalAmount, screen.getClass().getName(), scrollable,
+                this.scrollSession.hasItemRendering(), this.scrollSession.isTooltipVisible(),
+                this.scrollSession.isTooltipOverflowing(), this.scrollSession.hasScrollOffset());
+        }
+        if (scrollable) {
+            handleMouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount);
+        }
+    }
+
+    /** Key event observed on any screen (called from the Screen keyPressed hook). */
+    public void onScreenKey(Screen screen, KeyEvent keyEvent) {
+        boolean scrollable = isScrollableContext();
+        if (DEBUG) {
+            LOGGER.info("[SSTT-debug] key screen={} gate={} (slot={} visible={} overflow={} offset={})",
+                screen.getClass().getName(), scrollable,
+                this.scrollSession.hasItemRendering(), this.scrollSession.isTooltipVisible(),
+                this.scrollSession.isTooltipOverflowing(), this.scrollSession.hasScrollOffset());
+        }
+        if (scrollable) {
+            handleKeyScroll(keyEvent);
+        }
+    }
+
+    /**
+     * Whether scroll/key input should currently move a tooltip: any hovered
+     * container slot, or any visible tooltip on any screen. With the
+     * overflow_only config enabled, tooltips outside containers only scroll
+     * when they stick out past a screen edge (for users who don't want the
+     * wheel shared with GUIs that scroll their own content).
+     */
+    public boolean isScrollableContext() {
+        if (!this.config.enable()) return false;
+        if (this.scrollSession.hasItemRendering()) return true;
+        if (!this.scrollSession.isTooltipVisible()) return false;
+        if (!this.config.overflowOnly()) return true;
+        return this.scrollSession.isTooltipOverflowing() || this.scrollSession.hasScrollOffset();
     }
 
     public void onSlotHover(Slot slot) {

@@ -35,6 +35,7 @@ public class SimpleScrollToolTipsConfig {
             this.root.addProperty("auto_reset", true);
             this.root.addProperty("invert_horizontal", false);
             this.root.addProperty("invert_vertical", false);
+            this.root.addProperty("overflow_only", false);
             this.save();
         } else if (!Files.isRegularFile(configPath)) {
             Minecraft.getInstance().emergencySaveAndCrash(
@@ -115,5 +116,14 @@ public class SimpleScrollToolTipsConfig {
 
     public void invertVertical(boolean invert) {
         this.root.addProperty("invert_vertical", invert);
+    }
+
+    /** When true, tooltips outside container slots only scroll if they stick out past a screen edge. */
+    public boolean overflowOnly() {
+        return this.root.has("overflow_only") && this.root.get("overflow_only").getAsBoolean();
+    }
+
+    public void overflowOnly(boolean overflowOnly) {
+        this.root.addProperty("overflow_only", overflowOnly);
     }
 }

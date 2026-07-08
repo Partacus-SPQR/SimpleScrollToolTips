@@ -131,6 +131,22 @@ public class ConfigScreen extends Screen {
 
         this.addRenderableWidget(
             Button.builder(
+                translateBool("simplescrolltooltips.config.overflow_only", this.config.overflowOnly()),
+                button -> {
+                    boolean newVal = !this.config.overflowOnly();
+                    this.config.overflowOnly(newVal);
+                    this.config.save();
+                    button.setMessage(translateBool("simplescrolltooltips.config.overflow_only", newVal));
+                }
+            )
+            .tooltip(Tooltip.create(Component.translatable("simplescrolltooltips.config.overflow_only.tooltip")))
+            .pos(this.width / 2 - 100, this.height / 2 + 40)
+            .size(200, 20)
+            .build()
+        );
+
+        this.addRenderableWidget(
+            Button.builder(
                 Component.translatable("simplescrolltooltips.config.done"),
                 //? if >=26.1 {
                 button -> ScreenCompat.open(Minecraft.getInstance(), this.parent)
@@ -138,7 +154,7 @@ public class ConfigScreen extends Screen {
                 /*button -> Minecraft.getInstance().setScreen(this.parent)*/
                 //?}
             )
-            .pos(this.width / 2 - 100, this.height / 2 + 40)
+            .pos(this.width / 2 - 100, this.height / 2 + 65)
             .size(200, 20)
             .build()
         );

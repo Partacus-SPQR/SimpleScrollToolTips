@@ -12,6 +12,8 @@
 	"simplescrolltooltips.config.auto_reset.tooltip": "When enabled, scroll position resets when hovering a different item slot.",
 	"simplescrolltooltips.config.invert_x": "Invert Horizontal: %s",
 	"simplescrolltooltips.config.invert_y": "Invert Vertical: %s",
+	"simplescrolltooltips.config.overflow_only": "Only Scroll Cut-Off Tooltips: %s",
+	"simplescrolltooltips.config.overflow_only.tooltip": "When ON, tooltips outside of containers can only be scrolled if they extend past the edge of the screen. When OFF, any hovered tooltip can be scrolled anywhere.",
 	"simplescrolltooltips.config.done": "Done",
 
 	"simplescrolltooltips.constant.true": "ON",

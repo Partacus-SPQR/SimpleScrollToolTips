@@ -2,6 +2,19 @@
 
 All notable changes to SimpleScrollToolTips will be documented in this file.
 
+## [1.1.0] - 2026-07-08
+
+### Added
+- **Mod GUI compatibility**: tooltip scrolling now works in custom mod screens (profile viewers, wardrobe/museum GUIs, etc.), not just vanilla-style container screens. Tooltips are tracked and offset at the universal vanilla tooltip pipeline (`GuiGraphicsExtractor`), and scroll/key input is captured at the `MouseHandler`/`Screen` level so any open screen is covered.
+- New `overflow_only` config option (default off): when enabled, tooltips outside containers only scroll if they extend past a screen edge, so the wheel is never shared with GUIs that scroll their own content.
+- Debug tracing available via `-Dsimplescrolltooltips.debug=true`.
+
+### Fixed
+- `invert_horizontal` / `invert_vertical` config options had no effect (the inversion was applied twice and cancelled itself out).
+
+### Changed
+- In non-container GUIs, auto-reset now triggers when the tooltip disappears for a moment (hovering something new), mirroring the slot-change reset in containers.
+
 ## [1.0.0] - 2026-06-30
 
 ### Added

@@ -231,4 +231,9 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
     public ScrollSession scrollSession() {
         return this.scrollSession;
     }
+
+    /** Tooltip render scale (independent of the global GUI scale). */
+    public float tooltipScale() {
+        return (float) this.config.tooltipScale();
+    }
 }

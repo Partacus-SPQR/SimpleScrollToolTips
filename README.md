@@ -3,7 +3,7 @@
 [![Minecraft](https://img.shields.io/badge/Minecraft-26.1--26.2-green)](https://minecraft.net)
 [![Fabric](https://img.shields.io/badge/Mod%20Loader-Fabric-blue)](https://fabricmc.net)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
-[![Version](https://img.shields.io/badge/Version-1.1.0-orange)](https://modrinth.com/project/simplescrolltooltips)
+[![Version](https://img.shields.io/badge/Version-1.2.0-orange)](https://modrinth.com/project/simplescrolltooltips)
 
 **Scroll oversized item tooltips so you can actually read the parts that run off your screen.**
 
@@ -20,13 +20,14 @@ Ever hovered an item with so many enchantments and stats that its tooltip spills
 - **Mouse wheel** to scroll vertically, **Shift + wheel** to scroll horizontally
 - **Arrow-key scrolling** (↑ ↓ ← →), fully rebindable
 - **Auto-reset** — scroll position resets when you hover a different item
+- **Independent tooltip scale** — shrink (or enlarge) tooltips on their own scale so big ones fit, without changing your global GUI scale
 - **Adjustable sensitivity** and optional **per-axis inversion**
 - **Client-side only** — works on any server, including stat-heavy ones like SkyBlock
 - **[Mod Menu](https://modrinth.com/mod/modmenu)** configuration screen
 
 ## Controls
 
-Scrolling only acts while you're hovering an item that has a tooltip.
+Scrolling acts whenever a tooltip is showing — on an item slot, or hovering anything with a tooltip in any GUI.
 
 | Input | Action |
 |-------|--------|
@@ -49,6 +50,7 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 | `invert_horizontal` | `false` | Invert horizontal scroll direction |
 | `invert_vertical` | `false` | Invert vertical scroll direction |
 | `overflow_only` | `false` | Outside containers, only scroll tooltips that extend past the screen edge |
+| `tooltip_scale` | `1.0` | Render scale for tooltips, independent of the global GUI scale (`1.0` = off) |
 
 ## Requirements
 
@@ -62,9 +64,9 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 
 | Minecraft | Mod Version | Fabric Loader | Java |
 |-----------|-------------|---------------|------|
-| 26.2 | 1.1.0 | 0.16.0+ | 25 |
-| 26.1.2 | 1.1.0 | 0.16.0+ | 25 |
-| 26.1 | 1.1.0 | 0.16.0+ | 25 |
+| 26.2 | 1.2.0 | 0.16.0+ | 25 |
+| 26.1.2 | 1.2.0 | 0.16.0+ | 25 |
+| 26.1 | 1.2.0 | 0.16.0+ | 25 |
 
 ## Installation
 
@@ -84,6 +86,8 @@ Per-version jars are written to `versions/<mc>/build/libs/`.
 <img width="400" height="211" alt="bandicam 2026-06-30 02-49-07-135" src="https://github.com/user-attachments/assets/2868882c-2516-449a-a40e-715488e43157" />
 
 Every tooltip rendered through the vanilla pipeline — containers, custom mod GUIs, any positioner — funnels through a single positioning call in `GuiGraphicsExtractor`. SimpleScrollToolTips offsets the tooltip position **after** the positioner's screen-clamp there, letting it move off-screen so the hidden lines scroll into view. Scroll input is captured at the `MouseHandler`/`Screen` level, so it works on any open screen. If you'd rather the wheel only act on tooltips that are actually cut off (so GUIs that scroll their own content are never shared), enable `overflow_only` in the config.
+
+The optional `tooltip_scale` renders tooltips through a matrix scale on the same pipeline, so they can be shrunk or enlarged independently of your global GUI scale — handy for fitting huge tooltips without shrinking the rest of your interface.
 
 ## License
 

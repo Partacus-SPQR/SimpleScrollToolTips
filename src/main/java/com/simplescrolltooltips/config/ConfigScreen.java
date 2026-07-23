@@ -145,6 +145,26 @@ public class ConfigScreen extends Screen {
             .build()
         );
 
+        AbstractSliderButton scaleSlider = new AbstractSliderButton(
+            this.width / 2 - 100, this.height / 2 + 65,
+            200, 20,
+            tooltipScaleMessage(this.config.tooltipScale()),
+            (this.config.tooltipScale() - SCALE_MIN) / SCALE_RANGE
+        ) {
+            @Override
+            protected void updateMessage() {
+                this.setMessage(tooltipScaleMessage(sliderToScale(this.value)));
+            }
+
+            @Override
+            protected void applyValue() {
+                ConfigScreen.this.config.tooltipScale(sliderToScale(this.value));
+                ConfigScreen.this.config.save();
+            }
+        };
+        scaleSlider.setTooltip(Tooltip.create(Component.translatable("simplescrolltooltips.config.tooltip_scale.tooltip")));
+        this.addRenderableWidget(scaleSlider);
+
         this.addRenderableWidget(
             Button.builder(
                 Component.translatable("simplescrolltooltips.config.done"),
@@ -154,9 +174,25 @@ public class ConfigScreen extends Screen {
                 /*button -> Minecraft.getInstance().setScreen(this.parent)*/
                 //?}
             )
-            .pos(this.width / 2 - 100, this.height / 2 + 65)
+            .pos(this.width / 2 - 100, this.height / 2 + 90)
             .size(200, 20)
             .build()
+        );
+    }
+
+    private static final double SCALE_MIN = 0.25;
+    private static final double SCALE_MAX = 2.0;
+    private static final double SCALE_RANGE = SCALE_MAX - SCALE_MIN;
+
+    private static double sliderToScale(double sliderValue) {
+        double scale = SCALE_MIN + sliderValue * SCALE_RANGE;
+        return Math.round(scale / 0.05) * 0.05;
+    }
+
+    private static Component tooltipScaleMessage(double scale) {
+        return Component.translatable(
+            "simplescrolltooltips.config.tooltip_scale",
+            String.format(java.util.Locale.ROOT, "%.2f", scale)
         );
     }
 

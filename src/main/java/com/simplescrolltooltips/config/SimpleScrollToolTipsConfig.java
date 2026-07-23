@@ -36,6 +36,7 @@ public class SimpleScrollToolTipsConfig {
             this.root.addProperty("invert_horizontal", false);
             this.root.addProperty("invert_vertical", false);
             this.root.addProperty("overflow_only", false);
+            this.root.addProperty("tooltip_scale", 1.0);
             this.save();
         } else if (!Files.isRegularFile(configPath)) {
             Minecraft.getInstance().emergencySaveAndCrash(
@@ -125,5 +126,14 @@ public class SimpleScrollToolTipsConfig {
 
     public void overflowOnly(boolean overflowOnly) {
         this.root.addProperty("overflow_only", overflowOnly);
+    }
+
+    /** Render scale for tooltips, independent of the global GUI scale. 1.0 = native (off). */
+    public double tooltipScale() {
+        return this.root.has("tooltip_scale") ? this.root.get("tooltip_scale").getAsDouble() : 1.0;
+    }
+
+    public void tooltipScale(double scale) {
+        this.root.addProperty("tooltip_scale", scale);
     }
 }

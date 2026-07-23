@@ -2,6 +2,11 @@
 
 All notable changes to SimpleScrollToolTips will be documented in this file.
 
+## [1.2.0] - 2026-07-08
+
+### Added
+- **Independent tooltip scale**: a `tooltip_scale` option (Mod Menu slider) renders tooltips at their own scale, separate from the global GUI scale. Set it below 1.00 to shrink oversized tooltips so they fit — without having to lower your GUI scale and shrink your whole inventory/HUD. Works in every GUI (vanilla and modded). `1.00` = off (native size).
+
 ## [1.1.0] - 2026-07-08
 
 ### Added

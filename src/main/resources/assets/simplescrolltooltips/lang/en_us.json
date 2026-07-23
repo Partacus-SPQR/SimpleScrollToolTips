@@ -14,6 +14,8 @@
 	"simplescrolltooltips.config.invert_y": "Invert Vertical: %s",
 	"simplescrolltooltips.config.overflow_only": "Only Scroll Cut-Off Tooltips: %s",
 	"simplescrolltooltips.config.overflow_only.tooltip": "When ON, tooltips outside of containers can only be scrolled if they extend past the edge of the screen. When OFF, any hovered tooltip can be scrolled anywhere.",
+	"simplescrolltooltips.config.tooltip_scale": "Tooltip Scale: %s",
+	"simplescrolltooltips.config.tooltip_scale.tooltip": "Renders tooltips at this scale, independent of your global GUI scale. Set below 1.00 to shrink big tooltips so they fit without shrinking the rest of your interface. 1.00 = off (native size).",
 	"simplescrolltooltips.config.done": "Done",
 
 	"simplescrolltooltips.constant.true": "ON",

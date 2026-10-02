@@ -15,7 +15,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.Slot;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 public class SimpleScrollToolTipsClient implements ClientModInitializer {
     public static final String MOD_ID = "simplescrolltooltips";
@@ -55,29 +55,29 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
 
         //? if >=26.1 {
         this.keyScrollUp = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("simplescrolltooltips.key.scroll_up", GLFW.GLFW_KEY_UP, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_up", InputConstants.KEY_UP, category)
         );
         this.keyScrollDown = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("simplescrolltooltips.key.scroll_down", GLFW.GLFW_KEY_DOWN, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_down", InputConstants.KEY_DOWN, category)
         );
         this.keyScrollLeft = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("simplescrolltooltips.key.scroll_left", GLFW.GLFW_KEY_LEFT, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_left", InputConstants.KEY_LEFT, category)
         );
         this.keyScrollRight = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("simplescrolltooltips.key.scroll_right", GLFW.GLFW_KEY_RIGHT, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_right", InputConstants.KEY_RIGHT, category)
         );
         //?} else {
         /*this.keyScrollUp = KeyBindingHelper.registerKeyBinding(
-            new KeyMapping("simplescrolltooltips.key.scroll_up", GLFW.GLFW_KEY_UP, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_up", InputConstants.KEY_UP, category)
         );
         this.keyScrollDown = KeyBindingHelper.registerKeyBinding(
-            new KeyMapping("simplescrolltooltips.key.scroll_down", GLFW.GLFW_KEY_DOWN, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_down", InputConstants.KEY_DOWN, category)
         );
         this.keyScrollLeft = KeyBindingHelper.registerKeyBinding(
-            new KeyMapping("simplescrolltooltips.key.scroll_left", GLFW.GLFW_KEY_LEFT, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_left", InputConstants.KEY_LEFT, category)
         );
         this.keyScrollRight = KeyBindingHelper.registerKeyBinding(
-            new KeyMapping("simplescrolltooltips.key.scroll_right", GLFW.GLFW_KEY_RIGHT, category)
+            new KeyMapping("simplescrolltooltips.key.scroll_right", InputConstants.KEY_RIGHT, category)
         );
         *///?}
     }
@@ -215,9 +215,13 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
     }
 
     private static boolean isShiftDown() {
-        long window = org.lwjgl.glfw.GLFW.glfwGetCurrentContext();
-        return org.lwjgl.glfw.GLFW.glfwGetKey(window, GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
-            || org.lwjgl.glfw.GLFW.glfwGetKey(window, GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+        //? if >=26.3 {
+        return InputConstants.isKeyDown(InputConstants.KEY_LSHIFT)
+            || InputConstants.isKeyDown(InputConstants.KEY_RSHIFT);
+        //?} else {
+        /*return InputConstants.isKeyDown(net.minecraft.client.Minecraft.getInstance().getWindow(), InputConstants.KEY_LSHIFT)
+            || InputConstants.isKeyDown(net.minecraft.client.Minecraft.getInstance().getWindow(), InputConstants.KEY_RSHIFT);*/
+        //?}
     }
 
     public static SimpleScrollToolTipsClient getInstance() {

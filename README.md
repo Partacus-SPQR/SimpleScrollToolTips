@@ -1,6 +1,6 @@
 # SimpleScrollToolTips
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-26.1--26.2-green)](https://minecraft.net)
+[![Minecraft](https://img.shields.io/badge/Minecraft-26.1--26.3-green)](https://minecraft.net)
 [![Fabric](https://img.shields.io/badge/Mod%20Loader-Fabric-blue)](https://fabricmc.net)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Version](https://img.shields.io/badge/Version-1.2.0-orange)](https://modrinth.com/project/simplescrolltooltips)
@@ -54,7 +54,7 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 
 ## Requirements
 
-- **Minecraft** 26.1, 26.1.2, or 26.2
+- **Minecraft** 26.1, 26.1.2, 26.2, or 26.3
 - **Fabric Loader** 0.16.0+
 - **Fabric API**
 - **Java** 25
@@ -64,6 +64,7 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 
 | Minecraft | Mod Version | Fabric Loader | Java |
 |-----------|-------------|---------------|------|
+| 26.3 | 1.2.0 | 0.19.5+ | 25 |
 | 26.2 | 1.2.0 | 0.16.0+ | 25 |
 | 26.1.2 | 1.2.0 | 0.16.0+ | 25 |
 | 26.1 | 1.2.0 | 0.16.0+ | 25 |

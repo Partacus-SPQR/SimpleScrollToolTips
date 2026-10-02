@@ -5,7 +5,7 @@ pluginManagement {
         maven("https://maven.kikugie.dev/releases")
     }
     plugins {
-        id("fabric-loom") version "1.15.5"
+        id("fabric-loom") version "1.16.3"
         id("dev.kikugie.stonecutter") version "0.5.1"
     }
 }
@@ -19,7 +19,7 @@ stonecutter {
     centralScript = "build.gradle.kts"
 
     create(rootProject) {
-        versions("26.1", "26.1.2", "26.2")
+        versions("26.1", "26.1.2", "26.2", "26.3")
         vcsVersion = "26.2"
     }
 }

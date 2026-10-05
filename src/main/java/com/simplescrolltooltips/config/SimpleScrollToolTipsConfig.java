@@ -16,6 +16,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class SimpleScrollToolTipsConfig {
+    public static final double TOOLTIP_SCALE_MIN = 0.25;
+    public static final double TOOLTIP_SCALE_MAX = 2.0;
+    public static final double TOOLTIP_SCALE_STEP = 0.05;
+
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final int VERSION = 1;
 

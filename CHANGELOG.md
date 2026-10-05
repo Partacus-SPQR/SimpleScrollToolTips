@@ -2,6 +2,11 @@
 
 All notable changes to SimpleScrollToolTips will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- **Ctrl + wheel tooltip resizing**: while a tooltip is visible in any GUI, hold either Ctrl key and scroll to adjust the saved global tooltip scale by 0.05 within 0.25–2.00. Ctrl takes precedence over Shift and consumes the wheel event even at the limits. Reset to native size with the Mod Menu scale slider.
+
 ## [1.2.0] - 2026-07-08
 
 ### Added

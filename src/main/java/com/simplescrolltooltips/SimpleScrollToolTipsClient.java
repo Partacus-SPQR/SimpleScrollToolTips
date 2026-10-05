@@ -2,6 +2,7 @@ package com.simplescrolltooltips;
 
 import com.simplescrolltooltips.config.SimpleScrollToolTipsConfig;
 import com.simplescrolltooltips.object.ScrollSession;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 //? if >=26.1 {
@@ -11,6 +12,7 @@ import com.simplescrolltooltips.compat.ScreenCompat;
 /*import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 *///?}
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.resources.Identifier;
@@ -35,6 +37,7 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
     private KeyMapping keyScrollRight;
 
     private Screen previousScreen;
+    private Screen tooltipScreen;
 
     @Override
     public void onInitializeClient() {
@@ -102,6 +105,7 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
      * mod GUIs), the scroll is auto-reset, mirroring the slot-change reset.
      */
     public void onTooltipPositioned(int screenWidth, int screenHeight, int tooltipWidth, int tooltipHeight, int baseX, int baseY) {
+        this.tooltipScreen = currentScreen();
         boolean newTooltip = this.scrollSession.trackTooltip(screenWidth, screenHeight, tooltipWidth, tooltipHeight, baseX, baseY);
         if (newTooltip && this.config.autoReset() && !this.scrollSession.hasItemRendering()) {
             this.scrollSession.resetScrollAmount();
@@ -117,6 +121,31 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
                 this.lastTooltipDebug = state;
             }
         }
+    }
+
+    /** Claims Ctrl + vertical wheel to resize a visible tooltip before the screen handles it. */
+    public boolean tryResizeTooltip(double verticalAmount) {
+        if (!this.config.enable() || !Double.isFinite(verticalAmount) || verticalAmount == 0.0 || !isControlDown()) {
+            return false;
+        }
+        if (this.tooltipScreen != currentScreen()) {
+            this.scrollSession.clearTooltip();
+            this.tooltipScreen = null;
+        }
+        if (!this.scrollSession.isTooltipVisible()) {
+            return false;
+        }
+
+        double currentScale = this.config.tooltipScale();
+        double scale = currentScale + Math.copySign(SimpleScrollToolTipsConfig.TOOLTIP_SCALE_STEP, verticalAmount);
+        scale = Math.max(SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MIN, Math.min(SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MAX, scale));
+        scale = Math.round(scale * 100.0) / 100.0;
+        if (scale != currentScale) {
+            this.config.tooltipScale(scale);
+            this.config.save();
+        }
+        // Consume the gesture even at a limit, so neither the tooltip nor the screen scrolls.
+        return true;
     }
 
     /** Wheel event observed while a screen is open (called for every screen type). */
@@ -172,6 +201,10 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
     }
 
     private void onScreenClosed(Screen oldScreen) {
+        if (this.tooltipScreen == oldScreen) {
+            this.scrollSession.clearTooltip();
+            this.tooltipScreen = null;
+        }
         if (oldScreen != null) {
             this.scrollSession.lastSlotRendered(null);
             this.scrollSession.resetScrollAmount();
@@ -218,6 +251,24 @@ public class SimpleScrollToolTipsClient implements ClientModInitializer {
         long window = org.lwjgl.glfw.GLFW.glfwGetCurrentContext();
         return org.lwjgl.glfw.GLFW.glfwGetKey(window, GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
             || org.lwjgl.glfw.GLFW.glfwGetKey(window, GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
+    }
+
+    private static boolean isControlDown() {
+        //? if >=26.3 {
+        /*return InputConstants.isKeyDown(InputConstants.KEY_LCONTROL)
+            || InputConstants.isKeyDown(InputConstants.KEY_RCONTROL);*/
+        //?} else {
+        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), InputConstants.KEY_LCONTROL)
+            || InputConstants.isKeyDown(Minecraft.getInstance().getWindow(), InputConstants.KEY_RCONTROL);
+        //?}
+    }
+
+    private static Screen currentScreen() {
+        //? if >=26.1 {
+        return ScreenCompat.current(Minecraft.getInstance());
+        //?} else {
+        /*return Minecraft.getInstance().screen;*/
+        //?}
     }
 
     public static SimpleScrollToolTipsClient getInstance() {

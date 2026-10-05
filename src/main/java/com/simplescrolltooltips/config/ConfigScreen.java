@@ -149,7 +149,7 @@ public class ConfigScreen extends Screen {
             this.width / 2 - 100, this.height / 2 + 65,
             200, 20,
             tooltipScaleMessage(this.config.tooltipScale()),
-            (this.config.tooltipScale() - SCALE_MIN) / SCALE_RANGE
+            (this.config.tooltipScale() - SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MIN) / SCALE_RANGE
         ) {
             @Override
             protected void updateMessage() {
@@ -180,13 +180,11 @@ public class ConfigScreen extends Screen {
         );
     }
 
-    private static final double SCALE_MIN = 0.25;
-    private static final double SCALE_MAX = 2.0;
-    private static final double SCALE_RANGE = SCALE_MAX - SCALE_MIN;
+    private static final double SCALE_RANGE = SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MAX - SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MIN;
 
     private static double sliderToScale(double sliderValue) {
-        double scale = SCALE_MIN + sliderValue * SCALE_RANGE;
-        return Math.round(scale / 0.05) * 0.05;
+        double scale = SimpleScrollToolTipsConfig.TOOLTIP_SCALE_MIN + sliderValue * SCALE_RANGE;
+        return Math.round(scale / SimpleScrollToolTipsConfig.TOOLTIP_SCALE_STEP) * SimpleScrollToolTipsConfig.TOOLTIP_SCALE_STEP;
     }
 
     private static Component tooltipScaleMessage(double scale) {

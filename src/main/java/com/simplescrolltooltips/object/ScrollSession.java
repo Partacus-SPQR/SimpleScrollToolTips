@@ -13,6 +13,7 @@ public class ScrollSession {
     private Slot lastSlotRendered;
 
     private long lastTooltipNanos;
+    private boolean tooltipTracked;
     private int tooltipWidth;
     private int tooltipHeight;
     private boolean tooltipOverflowing;
@@ -30,18 +31,25 @@ public class ScrollSession {
         // A "new" tooltip = there was a gap with no tooltip rendered. Deliberately
         // NOT size-based: some mod GUIs report fluctuating sizes for the same
         // tooltip, and a size-based reset would zero the scroll every frame.
-        boolean appeared = now - this.lastTooltipNanos > TOOLTIP_VISIBLE_WINDOW_NANOS;
+        boolean appeared = !this.tooltipTracked || now - this.lastTooltipNanos > TOOLTIP_VISIBLE_WINDOW_NANOS;
         this.tooltipWidth = tooltipWidth;
         this.tooltipHeight = tooltipHeight;
         this.tooltipOverflowing = baseX < 0 || baseY < 0
             || baseX + tooltipWidth > screenWidth
             || baseY + tooltipHeight > screenHeight;
         this.lastTooltipNanos = now;
+        this.tooltipTracked = true;
         return appeared;
     }
 
     public boolean isTooltipVisible() {
-        return System.nanoTime() - this.lastTooltipNanos < TOOLTIP_VISIBLE_WINDOW_NANOS;
+        return this.tooltipTracked && System.nanoTime() - this.lastTooltipNanos < TOOLTIP_VISIBLE_WINDOW_NANOS;
+    }
+
+    /** Discards visibility from a screen that is no longer open. */
+    public void clearTooltip() {
+        this.tooltipTracked = false;
+        this.tooltipOverflowing = false;
     }
 
     /** Whether the tooltip's natural (un-scrolled) position sticks out past any screen edge. */

@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
  * current screen. This is what makes scrolling work in custom mod GUIs
  * (e.g. profile viewers) that don't extend the vanilla container screen.
  *
- * The screen's own handling still runs first; we never consume the event.
+ * Ctrl + vertical wheel resizes a visible tooltip and consumes the event.
+ * All other wheel input keeps the screen's own handling first.
  */
 @Mixin(MouseHandler.class)
 public class MixinMouseHandler {
@@ -27,9 +28,12 @@ public class MixinMouseHandler {
         )
     )
     private boolean simplescrolltooltips$scrollTooltip(Screen screen, double mouseX, double mouseY, double horizontalAmount, double verticalAmount, Operation<Boolean> original) {
+        SimpleScrollToolTipsClient main = SimpleScrollToolTipsClient.getInstance();
+        if (main != null && main.tryResizeTooltip(verticalAmount)) {
+            return true;
+        }
         boolean handled = original.call(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
 
-        SimpleScrollToolTipsClient main = SimpleScrollToolTipsClient.getInstance();
         if (main != null) {
             main.onScreenScroll(screen, mouseX, mouseY, horizontalAmount, verticalAmount);
         }

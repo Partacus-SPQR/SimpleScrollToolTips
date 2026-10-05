@@ -21,6 +21,7 @@ Ever hovered an item with so many enchantments and stats that its tooltip spills
 - **Arrow-key scrolling** (↑ ↓ ← →), fully rebindable
 - **Auto-reset** — scroll position resets when you hover a different item
 - **Independent tooltip scale** — shrink (or enlarge) tooltips on their own scale so big ones fit, without changing your global GUI scale
+- **Ctrl + wheel resizing** — adjust the saved tooltip scale while a tooltip is visible in any GUI
 - **Adjustable sensitivity** and optional **per-axis inversion**
 - **Client-side only** — works on any server, including stat-heavy ones like SkyBlock
 - **[Mod Menu](https://modrinth.com/mod/modmenu)** configuration screen
@@ -33,10 +34,13 @@ Scrolling acts whenever a tooltip is showing — on an item slot, or hovering an
 |-------|--------|
 | Mouse wheel | Scroll the tooltip vertically |
 | Shift + mouse wheel | Scroll the tooltip horizontally |
+| Ctrl + mouse wheel | Enlarge (up) or shrink (down) the tooltip by 5 percentage points |
 | ↑ / ↓ | Scroll vertically |
 | ← / → | Scroll horizontally |
 
-All keys are rebindable in **Options → Controls → SimpleScrollToolTips**.
+Arrow keys are rebindable in **Options → Controls → SimpleScrollToolTips**.
+
+Hold either left or right **Ctrl** while a tooltip is visible to resize it in any vanilla or modded GUI. Ctrl takes precedence over Shift, and resizing consumes the wheel event so the tooltip and underlying screen do not scroll, even at the limits. Each vertical wheel event changes the global `tooltip_scale` setting by 0.05, between 0.25 and 2.00, and saves it for future tooltips and game sessions. Reset it to 1.00 with the **Mod Menu → Tooltip Scale** slider.
 
 ## Configuration
 
@@ -50,7 +54,7 @@ Edit in **Mod Menu**, or directly in `config/simplescrolltooltips.json`:
 | `invert_horizontal` | `false` | Invert horizontal scroll direction |
 | `invert_vertical` | `false` | Invert vertical scroll direction |
 | `overflow_only` | `false` | Outside containers, only scroll tooltips that extend past the screen edge |
-| `tooltip_scale` | `1.0` | Render scale for tooltips, independent of the global GUI scale (`1.0` = off) |
+| `tooltip_scale` | `1.0` | Saved render scale for all tooltips (0.25–2.00), adjustable with Ctrl + wheel or Mod Menu (`1.0` = native size) |
 
 ## Requirements
 
